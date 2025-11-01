@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>밥상뒤엎 – 홈</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Pretendard:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <a class="brand" href="/">밥상뒤엎</a>
+        <nav class="nav">
+            {% if user_name %}
+            <span class="welcome">{{ user_name }}님 환영합니다!</span>
+            <a class="btn" href="/mypage">마이페이지</a>
+            <a class="btn" href="/logout">로그아웃</a>
+            {% else %}
+            <a class="btn" href="/login">로그인</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- Main -->
+    <main>
+        <section class="hero">
+            <div style="display:flex;align-items:center;gap:10px;justify-content:center;">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="밥상뒤엎 로고" style="height:150px;">
+                <h1 class="title">밥상뒤엎</h1>
+            </div>
+            <p class="tag">10~30대를 위한 미니멀 레시피 허브</p>
+
+            <form class="searchbox" action="/search_result" method="GET">
+                <input name="q" placeholder="오늘 뭐 먹을래? (예: 떡볶이)" maxlength="30" autocomplete="off" />
+                <button class="btn" type="submit">검색</button>
+            </form>
+
+            <!-- Quick 메뉴 -->
+            <div class="quick">
+                <div class="chip" onclick="searchQuick('떡볶이')">
+                    <div class="emoji">🌶️</div><span>떡볶이</span>
+                </div>
+                <div class="chip" onclick="searchQuick('마라탕')">
+                    <div class="emoji">🥢</div><span>마라탕</span>
+                </div>
+                <div class="chip" onclick="searchQuick('치즈돈까스')">
+                    <div class="emoji">🧀</div><span>치즈돈까스</span>
+                </div>
+                <div class="chip" onclick="searchQuick('샐러드')">
+                    <div class="emoji">🥗</div><span>샐러드</span>
+                </div>
+                <div class="chip" onclick="searchQuick('파스타')">
+                    <div class="emoji">🍝</div><span>파스타</span>
+                </div>
+                <div class="chip" onclick="searchQuick('불닭볶음면')">
+                    <div class="emoji">🔥</div><span>불닭볶음면</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>ⓒ 밥상뒤엎 — 레시피의 진화가 시작되는 곳</footer>
+
+    <script>
+        function searchQuick(keyword) {
+            window.location.href = `/search_result?q=${encodeURIComponent(keyword)}`;
+        }
+    </script>
+    <!-- 챗봇 위젯 전체 -->
+    <div id="chatbot-widget">
+        <!-- 챗봇 버튼 -->
+        <button class="chatbot-button" id="chatbotButton">🍚</button>
+
+        <!-- 챗봇 창 -->
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <div class="chatbot-avatar">🍚</div>
+                <div class="chatbot-title">밥심이</div>
+                <button class="chatbot-close" id="chatbotClose">&times;</button>
+            </div>
+
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot">
+                    안녕하세요! 저는 밥심이예요. 레시피나 요리에 관해 무엇이든 물어보세요! 🍳
+                </div>
+            </div>
+
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="요리나 레시피에 대해 질문해보세요..." maxlength="200">
+                <button class="chatbot-send" id="chatbotSend">전송</button>
+            </div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+
+</html>

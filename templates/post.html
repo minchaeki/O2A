@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>밥상뒤엎 – 레시피 작성</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Pretendard:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+</head>
+
+<body>
+    <header>
+        <a class="brand" href="/">밥상뒤엎</a>
+        <div class="header-actions">
+            <button class="ghost" id="draftBtn" type="button">임시저장</button>
+            <button class="ghost" id="previewBtn" type="button">미리보기</button>
+        </div>
+    </header>
+
+    <main>
+        <form class="editor" id="recipeForm" novalidate>
+            <div class="row">
+                <label class="label" for="title">레시피 제목</label>
+                <input class="input" id="title" name="title" placeholder="예: 사골 베이스 떡볶이" maxlength="30" required />
+                <div class="hint">최대 30자까지 입력 가능합니다.</div>
+            </div>
+
+            <div class="grid2">
+                <div class="row">
+                    <label class="label" for="servings">분량</label>
+                    <input class="input" id="servings" name="servings" type="number" min="1" step="1"
+                        placeholder="2 (인분)" required />
+                    <div class="hint">나중에 서빙 수를 바꾸면 재료량이 자동 환산돼요.</div>
+                </div>
+                <div class="row">
+                    <label class="label" for="time">조리시간(분)</label>
+                    <input class="input" id="time" name="time" type="number" min="1" step="1" placeholder="20"
+                        required />
+                </div>
+            </div>
+
+            <div class="grid2">
+                <div class="row">
+                    <label class="label" for="level">난이도</label>
+                    <select class="select" id="level" name="level">
+                        <option value="하">하</option>
+                        <option value="중">중</option>
+                        <option value="상">상</option>
+                    </select>
+                </div>
+
+                <!-- 태그 -->
+                <div class="row">
+                    <label class="label" for="tagInput">태그</label>
+                    <input id="tagInput" class="input" placeholder="예: 매운, 간단, 혼밥">
+                    <div class="list" id="tagList"></div>
+                </div>
+            </div>
+
+            <!-- 카테고리 + 대표 이미지 (한 줄) -->
+            <div class="row grid2">
+                <div>
+                    <label class="label" for="category">카테고리</label>
+                    <select id="category" class="select">
+                        <option value="">선택</option>
+                        <option value="한식">한식</option>
+                        <option value="양식">양식</option>
+                        <option value="중식">중식</option>
+                        <option value="일식">일식</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="label" for="image">대표 이미지</label>
+                    <input type="file" id="image" name="image" class="input" accept="image/*">
+                    <div class="hint">JPG, PNG, GIF, WebP 형식을 지원합니다.</div>
+                </div>
+            </div>
+
+            <!-- 이미지 미리보기 영역 -->
+            <div class="row" id="imagePreviewSection" style="display: none;">
+                <label class="label">이미지 미리보기</label>
+                <div style="max-width: 300px; margin-top: 8px;">
+                    <img id="imagePreview" src="" alt="미리보기"
+                        style="width: 100%; height: auto; border-radius: 8px; border: 1px solid #eaeaea;">
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="label" for="desc">요약 소개</label>
+                <textarea class="textarea" id="desc" name="desc" placeholder="레시피의 포인트를 한두 문장으로 소개해 주세요."></textarea>
+            </div>
+
+            <!-- 재료 -->
+            <section class="row">
+                <div class="label">재료</div>
+                <div class="inline">
+                    <input class="input" id="ingInput" placeholder="예: 떡볶이 떡 400g" />
+                    <button class="btn" type="button" id="addIng">추가</button>
+                </div>
+                <div class="list" id="ingList"></div>
+            </section>
+
+            <!-- 만드는 법 -->
+            <section class="row">
+                <div class="label">만드는 법</div>
+                <div class="inline">
+                    <input class="input" id="stepInput" placeholder="예: 사골육수와 양념을 풀어 끓인다." />
+                    <input class="input small" id="stepMin" type="number" min="0" step="1" placeholder="타이머(분)" />
+                    <button class="btn" type="button" id="addStep">추가</button>
+                </div>
+                <div class="list" id="stepList"></div>
+            </section>
+
+            <div class="toolbar">
+                <div class="shortcut-hint">단축키: Ctrl/Cmd + Enter 저장, Ctrl/Cmd + K 미리보기</div>
+                <div class="toolbar-actions">
+                    <button class="btn" type="reset" id="resetBtn">초기화</button>
+                    <button class="btn primary" type="submit" id="submitBtn">발행하기</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- 미리보기 -->
+        <section class="preview" id="preview" hidden>
+            <div class="title" id="pvTitle"></div>
+            <div class="meta" id="pvMeta"></div>
+            <div class="tags" id="pvTags"></div>
+            <h4>재료</h4>
+            <ul id="pvIngs"></ul>
+            <h4>만드는 법</h4>
+            <ol id="pvSteps"></ol>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/post.js') }}"></script>
+    <!-- 챗봇 위젯 전체 -->
+    <div id="chatbot-widget">
+        <!-- 챗봇 버튼 -->
+        <button class="chatbot-button" id="chatbotButton">🍚</button>
+
+        <!-- 챗봇 창 -->
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <div class="chatbot-avatar">🍚</div>
+                <div class="chatbot-title">밥심이</div>
+                <button class="chatbot-close" id="chatbotClose">&times;</button>
+            </div>
+
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot">
+                    안녕하세요! 저는 밥심이예요. 레시피나 요리에 관해 무엇이든 물어보세요! 🍳
+                </div>
+            </div>
+
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="요리나 레시피에 대해 질문해보세요..." maxlength="200">
+                <button class="chatbot-send" id="chatbotSend">전송</button>
+            </div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,166 @@
+:root {
+    --bg: #f9f9fb;
+    --ink: #111111;
+    --muted: #6b6b6b;
+    --line: #eaeaea;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+    letter-spacing: -0.2px;
+}
+
+/* Header */
+header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(249, 249, 251, .8);
+    backdrop-filter: blur(8px);
+}
+
+.brand {
+    text-decoration: none;
+    color: var(--ink);
+    font-family: 'Jua', sans-serif;
+    font-size: 20px;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.btn {
+    appearance: none;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .12s ease;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: #f0f0f0;
+}
+
+/* Main */
+main {
+    min-height: 100%;
+    display: grid;
+    place-items: center;
+    padding: 96px 16px 40px;
+}
+
+.hero {
+    width: min(760px, 100%);
+    text-align: center;
+    display: grid;
+    gap: 18px;
+}
+
+.title {
+    font-family: 'Jua', sans-serif;
+    font-weight: 400;
+    font-size: clamp(36px, 6vw, 54px);
+}
+
+.tag {
+    color: var(--muted);
+    font-size: 15px;
+}
+
+/* Search */
+.searchbox {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 12px;
+    width: min(680px, 100%);
+    margin: 4px auto 0;
+}
+
+.searchbox input {
+    flex: 1;
+    border: 0;
+    outline: 0;
+    font-size: 16px;
+    background: transparent;
+    color: var(--ink);
+}
+
+.searchbox button {
+    padding: 10px 16px;
+}
+
+/* Quick */
+.quick {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+}
+
+.chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid var(--line);
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    width: 90px;
+    cursor: pointer;
+    transition: background .12s ease, transform .12s ease;
+}
+
+.chip .emoji {
+    font-size: 28px;
+    margin-bottom: 6px;
+}
+
+.chip span {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.chip:hover {
+    background: #f7f7f7;
+    transform: translateY(-1px);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    color: #8a8a8a;
+    padding: 24px;
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+}
